@@ -1,5 +1,6 @@
 package com.example.ochadukebiyori.androidcomponenttestexample
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -13,8 +14,8 @@ class MainActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            val textView = findViewById<TextView>(R.id.helloWorld)
-            textView.text = "Hi World!"
+            val intent = Intent(this, OtherActivity::class.java)
+            startActivity(intent)
         }
     }
 }

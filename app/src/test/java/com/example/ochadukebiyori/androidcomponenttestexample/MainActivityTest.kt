@@ -1,8 +1,11 @@
 package com.example.ochadukebiyori.androidcomponenttestexample
+// android
+import android.app.Activity
+import android.app.Instrumentation
+import android.content.Intent
 
 // androidx
-import androidx.test.core.app.launchActivity
-import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 
 // espresso
 import androidx.test.espresso.Espresso.onView
@@ -10,8 +13,8 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
 
@@ -44,5 +47,18 @@ class MainActivityTest {
                 hasComponent(OtherActivity::class.java.name)
             )
         )
+    }
+
+    @Test
+    fun OtherActivityから受け取った結果がテキストに反映されるべき() {
+        val intent = Intent().apply {
+            this.putExtra("greeting", "Hi World!")
+        }
+
+        val result = Instrumentation.ActivityResult(Activity.RESULT_OK, intent)
+        intending(hasComponent(OtherActivity::class.java.name)).respondWith(result)
+
+        onView(withId(R.id.button)).perform(click())
+        onView(withId(R.id.helloWorld)).check(matches(withText("Hi World!")))
     }
 }

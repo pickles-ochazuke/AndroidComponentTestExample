@@ -15,7 +15,16 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
             val intent = Intent(this, OtherActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
         }
     }
+
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            if (resultCode != RESULT_OK) { return }
+            if (requestCode != 1) { return }
+
+            findViewById<TextView>(R.id.helloWorld).text = data?.getStringExtra("greeting")
+        }
 }
